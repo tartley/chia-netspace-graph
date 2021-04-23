@@ -47,13 +47,21 @@ def growth(rows):
         last_avg = avg
         yield secs, value, avg, growth
 
+def percent_growth(rows):
+    for secs, value, avg, growth in rows:
+        if isinstance(avg, float) and isinstance(growth, float):
+            percent_growth = growth / avg * 100
+        else:
+            percent_growth = ""
+        yield secs, value, avg, growth, percent_growth
+
 def print_tsv(rows):
     """Print tab separated values on stdout"""
     for row in rows:
         print("\t".join(str(item) for item in row))
 
 def main():
-    print_tsv(growth(rolling_average(ms_to_secs(read_json(sys.stdin)))))
+    print_tsv(percent_growth(growth(rolling_average(ms_to_secs(read_json(sys.stdin))))))
 
 if __name__ == "__main__":
     main()
