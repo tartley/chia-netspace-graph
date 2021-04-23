@@ -11,8 +11,10 @@ set style line 3 \
     linetype 1 linewidth 2
 
 set xdata time
+set x2data time
 set timefmt "%s"
-set xrange [:1619278720]
+set xrange [1616155200:1619278720]
+set x2range [1616155200:1619278720]
 
 set grid xtics ytics linestyle 10
 
@@ -23,15 +25,20 @@ set multiplot layout 3,1
 set lmargin 10
 set rmargin 10
 set bmargin 0.5
-set tmargin 0.5
+set tmargin 1.5
 
 set format x ""
+set format x2 "%m/%d"
+set x2tics 1616155200,604800
+set xtics 1616155200,604800
 set ylabel "Size (PiB)"
 set yrange [0:]
 
 plot 'netspace.tsv' using 1:2 with points linestyle 1, \
                  '' using 1:3 with lines linestyle 2
 
+unset x2tics
+set tmargin 0.5
 set ytics nomirror
 set ylabel "Growth (PiB/week)" textcolor rgb "#0060ad"
 set yrange [-100:]
