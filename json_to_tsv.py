@@ -4,7 +4,7 @@ import math
 import sys
 
 # Number of samples rolling average should use, before and after offset=0
-ROLLING_HALFWIN_SIZE = 5
+ROLLING_HALFWIN_SIZE = 9
 
 SECS_PER_WEEK = 60 * 60 * 24 * 7
 
@@ -28,16 +28,16 @@ def window(rows, index, halfsize):
     end = min(len(rows), index + halfsize + 1)
     return [rows[offset] for offset in range(start, end)]
 
-def rolling_average(rows):
+def rolling_average(rows, halfwin=ROLLING_HALFWIN_SIZE):
     rows = list(rows)
-    values = [row[1] for row in rows]
-    for index, (secs, value) in enumerate(rows):
-        yield secs, value, mean(window(values, index, ROLLING_HALFWIN_SIZE))
+    last_col = [row[-1] for row in rows]
+    for index, values in enumerate(rows):
+        yield *values, mean(window(last_col, index, halfwin))
 
 def growth(rows):
     last_secs = None
     last_avg = None
-    for secs, value, avg in rows:
+    for secs, *values, avg in rows:
         if last_secs and last_avg:
             growth_per_sec = (avg - last_avg) / (secs - last_secs)
             growth = growth_per_sec * SECS_PER_WEEK
@@ -45,15 +45,15 @@ def growth(rows):
             growth = ""
         last_secs = secs
         last_avg = avg
-        yield secs, value, avg, growth
+        yield secs, *values, avg, growth
 
 def percent_growth(rows):
-    for secs, value, avg, growth in rows:
+    for secs, *values, avg, growth in rows:
         if isinstance(avg, float) and isinstance(growth, float):
             percent_growth = growth / avg * 100
         else:
             percent_growth = ""
-        yield secs, value, avg, growth, percent_growth
+        yield secs, *values, avg, growth, percent_growth
 
 def print_tsv(rows):
     """Print tab separated values on stdout"""
@@ -61,7 +61,18 @@ def print_tsv(rows):
         print("\t".join(str(item) for item in row))
 
 def main():
-    print_tsv(percent_growth(growth(rolling_average(ms_to_secs(read_json(sys.stdin))))))
+    print_tsv(
+        percent_growth(growth(
+            #rolling_average(
+                rolling_average(
+                    rolling_average(
+                        ms_to_secs(read_json(sys.stdin)),
+                        halfwin=3,
+                    ),
+                halfwin=5),
+            #halfwin=7)
+        ))
+    )
 
 if __name__ == "__main__":
     main()
