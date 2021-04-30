@@ -14,27 +14,25 @@ def read_json(handle):
     values = data["data"]
     timestamps = data["timestamp"]
     assert len(values) == len(timestamps)
-    return zip(timestamps, values)
+    return timestamps, values
 
-def ms_to_secs(rows):
-    for ms, value in rows:
-        yield ms / 1000, value
+###
 
-def mean(values):
+def mean_old(values):
     return sum(values) / len(values)
 
-def window(rows, index, halfsize):
+def window_old(rows, index, halfsize):
     start = max(0, index - halfsize)
     end = min(len(rows), index + halfsize + 1)
     return [rows[offset] for offset in range(start, end)]
 
-def rolling_average(rows, halfwin=ROLLING_HALFWIN_SIZE):
+def rolling_average_old(rows, halfwin=ROLLING_HALFWIN_SIZE):
     rows = list(rows)
     last_col = [row[-1] for row in rows]
     for index, values in enumerate(rows):
         yield *values, mean(window(last_col, index, halfwin))
 
-def growth(rows):
+def growth_old(rows):
     last_secs = None
     last_avg = None
     for secs, *values, avg in rows:
@@ -47,7 +45,7 @@ def growth(rows):
         last_avg = avg
         yield secs, *values, avg, growth
 
-def percent_growth(rows):
+def percent_growth_old(rows):
     for secs, *values, avg, growth in rows:
         if isinstance(avg, float) and isinstance(growth, float):
             percent_growth = growth / avg * 100
@@ -55,12 +53,12 @@ def percent_growth(rows):
             percent_growth = ""
         yield secs, *values, avg, growth, percent_growth
 
-def print_tsv(rows):
+def print_tsv_old(rows):
     """Print tab separated values on stdout"""
     for row in rows:
         print("\t".join(str(item) for item in row))
 
-def main():
+def main_old():
     print_tsv(
         percent_growth(
             growth(
@@ -70,6 +68,33 @@ def main():
                 ),
         ))
     )
+
+###
+
+def mean(values):
+    return sum(values) / len(values)
+
+def window(raws, index, halfsize):
+    start = max(0, index - halfsize)
+    end = min(len(raws), index + halfsize + 1)
+    return [raws[offset] for offset in range(start, end)]
+
+def rolling_average(raws, halfwin=ROLLING_HALFWIN_SIZE):
+    return [
+        mean(window(raws, index, halfwin))
+        for index, values in enumerate(raws)
+    ]
+
+def print_tsv(*cols):
+    """Print tab separated values on stdout"""
+    for row in zip(*cols):
+        print("\t".join(str(item) for item in row))
+
+def main():
+    msecs, raws = read_json(sys.stdin)
+    secs = [msec / 1000 for msec in msecs]
+    smooths = rolling_average(raws)
+    print_tsv(secs, raws, smooths)
 
 if __name__ == "__main__":
     main()

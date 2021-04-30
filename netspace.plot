@@ -37,19 +37,19 @@ set yrange [0:]
 plot 'netspace.tsv' using 1:2 with points linestyle 1, \
                  '' using 1:3 with lines linestyle 2
 
-unset x2tics
-set tmargin 0.5
-set ytics nomirror
-set ylabel "Growth (PiB/week)" textcolor rgb "#0060ad"
-set yrange [0:]
-
-plot 'netspace.tsv' using 1:4 with lines linestyle 2
-
-set bmargin 1.5
-set format x "%m/%d"
-set ylabel "Growth (%/week)" textcolor rgb "#ad3030"
-
-plot 'netspace.tsv' using 1:5 with lines linestyle 3
+# unset x2tics
+# set tmargin 0.5
+# set ytics nomirror
+# set ylabel "Growth (PiB/week)" textcolor rgb "#0060ad"
+# set yrange [0:]
+# 
+# plot 'netspace.tsv' using 1:4 with lines linestyle 2
+# 
+# set bmargin 1.5
+# set format x "%m/%d"
+# set ylabel "Growth (%/week)" textcolor rgb "#ad3030"
+# 
+# plot 'netspace.tsv' using 1:5 with lines linestyle 3
 
 unset multiplot
 
