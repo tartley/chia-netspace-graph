@@ -62,15 +62,12 @@ def print_tsv(rows):
 
 def main():
     print_tsv(
-        percent_growth(growth(
-            #rolling_average(
+        percent_growth(
+            growth(
                 rolling_average(
-                    rolling_average(
-                        ms_to_secs(read_json(sys.stdin)),
-                        halfwin=3,
-                    ),
-                halfwin=5),
-            #halfwin=7)
+                    ms_to_secs(read_json(sys.stdin)),
+                    halfwin=9,
+                ),
         ))
     )
 
