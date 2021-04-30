@@ -18,20 +18,6 @@ def read_json(handle):
 
 ###
 
-def mean_old(values):
-    return sum(values) / len(values)
-
-def window_old(rows, index, halfsize):
-    start = max(0, index - halfsize)
-    end = min(len(rows), index + halfsize + 1)
-    return [rows[offset] for offset in range(start, end)]
-
-def rolling_average_old(rows, halfwin=ROLLING_HALFWIN_SIZE):
-    rows = list(rows)
-    last_col = [row[-1] for row in rows]
-    for index, values in enumerate(rows):
-        yield *values, mean(window(last_col, index, halfwin))
-
 def growth_old(rows):
     last_secs = None
     last_avg = None
@@ -52,22 +38,6 @@ def percent_growth_old(rows):
         else:
             percent_growth = ""
         yield secs, *values, avg, growth, percent_growth
-
-def print_tsv_old(rows):
-    """Print tab separated values on stdout"""
-    for row in rows:
-        print("\t".join(str(item) for item in row))
-
-def main_old():
-    print_tsv(
-        percent_growth(
-            growth(
-                rolling_average(
-                    ms_to_secs(read_json(sys.stdin)),
-                    halfwin=9,
-                ),
-        ))
-    )
 
 ###
 
