@@ -32,7 +32,10 @@ set format x2 "%m/%d"
 set x2tics 1616155200,604800
 set xtics 1616155200,604800
 set ylabel "Size (PiB)"
-set yrange [0:]
+set yrange [0:*]
+
+set xrange [1616155200:*]
+set x2range [1616155200:*]
 
 plot 'netspace.tsv' using 1:2 with points linestyle 1, \
                  '' using 1:3 with lines linestyle 2, \
@@ -41,12 +44,13 @@ unset x2tics
 set tmargin 0.5
 set ytics nomirror
 set ylabel "Growth (PiB/week)" textcolor rgb "#0060ad"
-set yrange [0:]
+set yrange [0:*]
 set bmargin 1.5
 set format x "%m/%d"
 set y2label "Growth (%/week)" textcolor rgb "#ad3030"
 set y2tics
-set y2range [0:]
+
+set link y2 via y/5 inverse y*5
 
 plot 'netspace.tsv' using 1:4 with lines linestyle 2, \
                  '' using 1:5 axis x1y2 with lines linestyle 3
