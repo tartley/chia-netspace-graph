@@ -92,17 +92,12 @@ def print_tsv(rows):
 def main():
     msecs, raws = read_json(sys.stdin)
     timestamps = [(msec / 1000) for msec in msecs]
+    smooths = rolling_average(raws)
     rows = [
-        Datum(timestamp=timestamp, raw=raw)
-        for timestamp, raw in zip(timestamps, raws)
+        Datum(timestamp=timestamp, raw=raw, smooth=smooth)
+        for timestamp, raw, smooth in zip(timestamps, raws, smooths)
     ]
-
-    smooths = rolling_average([row.raw for row in rows])
-    for smooth, row in zip(smooths, rows):
-        row.smooth = smooth
-
     rows = calc_growth(rows, MAINNET_LAUNCH)
-
     print_tsv(rows)
 
 if __name__ == "__main__":
