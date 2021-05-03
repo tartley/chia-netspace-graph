@@ -35,9 +35,9 @@ def mean(values):
     return sum(values) / len(values)
 
 def window(raws, index, halfsize):
-    start = max(0, index - halfsize)
-    end = min(len(raws), index + halfsize + 1)
-    return [raws[offset] for offset in range(start, end)]
+    start = max(-index, -halfsize)
+    end = min(halfsize + 1, len(raws) - index)
+    return [raws[index + offset] for offset in range(start, end)]
 
 def rolling_average(raws, halfwin=ROLLING_HALFWIN_SIZE):
     return [
