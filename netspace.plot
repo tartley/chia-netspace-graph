@@ -20,7 +20,7 @@ set grid xtics ytics linestyle 10
 
 set key off
 
-set multiplot layout 3,1
+set multiplot layout 2,1
 
 set lmargin 10
 set rmargin 10
@@ -35,21 +35,21 @@ set ylabel "Size (PiB)"
 set yrange [0:]
 
 plot 'netspace.tsv' using 1:2 with points linestyle 1, \
-                 '' using 1:3 with lines linestyle 2
+                 '' using 1:3 with lines linestyle 2, \
 
-# unset x2tics
-# set tmargin 0.5
-# set ytics nomirror
-# set ylabel "Growth (PiB/week)" textcolor rgb "#0060ad"
-# set yrange [0:]
-# 
-# plot 'netspace.tsv' using 1:4 with lines linestyle 2
-# 
-# set bmargin 1.5
-# set format x "%m/%d"
-# set ylabel "Growth (%/week)" textcolor rgb "#ad3030"
-# 
-# plot 'netspace.tsv' using 1:5 with lines linestyle 3
+unset x2tics
+set tmargin 0.5
+set ytics nomirror
+set ylabel "Growth (PiB/week)" textcolor rgb "#0060ad"
+set yrange [0:]
+set bmargin 1.5
+set format x "%m/%d"
+set y2label "Growth (%/week)" textcolor rgb "#ad3030"
+set y2tics
+set y2range [0:]
+
+plot 'netspace.tsv' using 1:4 with lines linestyle 2, \
+                 '' using 1:5 axis x1y2 with lines linestyle 3
 
 unset multiplot
 
