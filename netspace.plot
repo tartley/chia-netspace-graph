@@ -13,7 +13,7 @@ set style line 3 \
 # set term svg
 # set output "netspace.svg"
 
-set term png size 800,600
+set term pngcairo size 800,600
 set output "netspace.png"
 
 set xdata time
