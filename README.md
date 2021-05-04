@@ -6,7 +6,7 @@ https://www.chiaexplorer.com/charts/netspace
 Open developer tools, look at the request to api2.chiaexplorer.com,
 which retrieves the graph data. Copy the response into netspace.json.
 
-Then run ./plot, which:
+Then run 'make', which:
 
       netspace.json
       |
@@ -17,4 +17,6 @@ Then run ./plot, which:
     gnuplot-------/
       |
       netspace.svg
+
+See Makefile for other possible make targets.
 

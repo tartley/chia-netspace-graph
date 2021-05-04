@@ -10,17 +10,18 @@ set style line 3 \
     linecolor rgb '#ad3030' \
     linetype 1 linewidth 2
 
-# set term svg
+# Reddit doesn't like svg images
+# set term svg enhanced
 # set output "netspace.svg"
 
-set term pngcairo size 800,600
+set term pngcairo enhanced size 800,600
 set output "netspace.png"
 
 set xdata time
 set x2data time
 set timefmt "%s"
-set xrange [1616155200:1619278720]
-set x2range [1616155200:1619278720]
+set xrange [1616155200:]
+set x2range [1616155200:]
 
 set grid xtics ytics linestyle 10
 
@@ -39,9 +40,6 @@ set x2tics 1616155200,604800
 set xtics 1616155200,604800
 set ylabel "Size (PiB)"
 set yrange [0:*]
-
-set xrange [1616155200:*]
-set x2range [1616155200:*]
 
 plot 'netspace.tsv' using 1:2 with points linestyle 1, \
                  '' using 1:3 with lines linestyle 2, \
