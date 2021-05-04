@@ -18,5 +18,9 @@ Then run 'make', which:
       |
       netspace.svg
 
+Which results in:
+
+![Graph of Chia netspace growth](netspace.png)
+
 See Makefile for other possible make targets.
 
