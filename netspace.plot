@@ -10,8 +10,11 @@ set style line 3 \
     linecolor rgb '#ad3030' \
     linetype 1 linewidth 2
 
-set term svg
-set output "netspace.svg"
+# set term svg
+# set output "netspace.svg"
+
+set term png size 800,600
+set output "netspace.png"
 
 set xdata time
 set x2data time
