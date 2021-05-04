@@ -18,3 +18,6 @@ Then run ./plot, which:
       |
       netspace.svg
 
+Which results in:
+
+![Graph of Chia netspace growth](netspace.png)
