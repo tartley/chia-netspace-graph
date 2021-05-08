@@ -48,14 +48,14 @@ unset x2tics
 set tmargin 0.5
 set ytics nomirror
 set ylabel "Growth (PiB/week)" textcolor rgb "#0060ad"
-set yrange [0:700]
+set yrange [0:]
 set bmargin 1.5
 set format x "%m/%d"
 set y2label "Growth (%/week)" textcolor rgb "#ad3030"
 set y2tics
 set key top left box
 
-set link y2 via y/5 inverse y*5
+set link y2 via y/10 inverse y*10
 
 plot 'netspace.tsv' using 1:4 title "Growth PiB/week" with lines linestyle 2, \
                  '' using 1:5 title "Growth %/week" with lines linestyle 3 axis x1y2
